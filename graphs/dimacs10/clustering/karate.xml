@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<graphml xmlns="http://graphml.graphdrawing.org/xmlns"
+         xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+         xsi:schemaLocation="http://graphml.graphdrawing.org/xmlns http://graphml.graphdrawing.org/xmlns/1.0/graphml.xsd">
+  <key id="containedVertices" for="node" attr.name="containedVertices" attr.type="string"/>
+  <key id="weight" for="edge" attr.name="weight" attr.type="double"/>
+  <graph id="cactus" edgedefault="undirected">
+    <node id="0">
+      <data key="containedVertices">0,1,2,3,4,5,6,7,8,9,10,12,13,14,15,16,17,18,19,20,21,22,23,24,25,26,27,28,29,30,31,32,33</data>
+    </node>
+    <node id="1">
+      <data key="containedVertices">11</data>
+    </node>
+    <edge id="0-1-0" source="0" target="1">
+      <data key="weight">1</data>
+    </edge>
+  </graph>
+</graphml>
