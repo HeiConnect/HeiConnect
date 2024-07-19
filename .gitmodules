@@ -1,0 +1,3 @@
+[submodule "extern/VieCut"]
+	path = extern/VieCut
+	url = https://github.com/VieCut/VieCut
