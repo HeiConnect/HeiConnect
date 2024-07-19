@@ -3,33 +3,7 @@ HeiConnect v1.0  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/9d0
 =====
 
 # Weighted Connectivity Augmentation Algorithms
-This is the code repository to accompany our paper *Henzinger, M., Noe, A., Schulz, C. and Strash, D., 2018. Practical Minimum Cut Algorithms. arXiv preprint [arXiv:1708.06127.](https://arxiv.org/abs/2402.07753)*
-It contains an exact ILP-based solver as well as several heuristic algorithms for the weighted connectivity augmentation problem.
-If you use this code in the context of an academic publication, we ask that you cite our paper:
-
-```bibtex
-@inproceedings{DBLP:conf/wea/FarajGJM024,
-  author       = {Marcelo Fonseca Faraj and
-                  Ernestine Gro{\ss}mann and
-                  Felix Joos and
-                  Thomas M{\"{o}}ller and
-                  Christian Schulz},
-  editor       = {Leo Liberti},
-  title        = {Engineering Weighted Connectivity Augmentation Algorithms},
-  booktitle    = {22nd International Symposium on Experimental Algorithms, {SEA} 2024,
-                  July 23-26, 2024, Vienna, Austria},
-  series       = {LIPIcs},
-  volume       = {301},
-  pages        = {11:1--11:22},
-  publisher    = {Schloss Dagstuhl - Leibniz-Zentrum f{\"{u}}r Informatik},
-  year         = {2024},
-  url          = {https://doi.org/10.4230/LIPIcs.SEA.2024.11},
-  doi          = {10.4230/LIPICS.SEA.2024.11},
-  timestamp    = {Fri, 12 Jul 2024 15:29:30 +0200},
-  biburl       = {https://dblp.org/rec/conf/wea/FarajGJM024.bib},
-  bibsource    = {dblp computer science bibliography, https://dblp.org}
-}
-```
+This is the code repository contains an exact ILP-based solver as well as several heuristic algorithms for the weighted connectivity augmentation problem.
 
 ## Building
 The project can be build using CMake. Make sure that the [Gurobi Optimizer](https://www.gurobi.com/solutions/gurobi-optimizer) and the [Boost](https://boost.org) and [LEMON](https://lemon.cs.elte.hu/trac/lemon) graph libraries can be found on your system. Gurobi is used to solve ILPs and LPs, Boost is mainly used to compute maximum flows while LEMON is used to compute a maximum weighted matching due to bugs in the Boost graph library.
@@ -79,3 +53,34 @@ An example of how to use our algoirhtm can be found in `run_example.sh`.
 
 ### Graph instances
 The generated graphs mentioned in the paper are included in `graphs/generated`. A small subset of the graphs from the 10th DIMACS Implementation Challenge is included as well, the complete set can be found at https://dimacs10.github.io/downloads.shtml.
+
+
+### Licence
+The program is licenced under MIT licence.
+If you publish results using our algorithms, please acknowledge our work by quoting the following paper:
+ *Fonseca, M., Großmann, E., Joos, F., Möller, T. and Schulz C. 2024. Engineering Weighted Connectivity Augmentation Algorithms. arXiv preprint [arXiv:1708.06127.](https://arxiv.org/abs/2402.07753)*
+
+
+```bibtex
+@inproceedings{DBLP:conf/wea/FarajGJM024,
+  author       = {Marcelo Fonseca Faraj and
+                  Ernestine Gro{\ss}mann and
+                  Felix Joos and
+                  Thomas M{\"{o}}ller and
+                  Christian Schulz},
+  editor       = {Leo Liberti},
+  title        = {Engineering Weighted Connectivity Augmentation Algorithms},
+  booktitle    = {22nd International Symposium on Experimental Algorithms, {SEA} 2024,
+                  July 23-26, 2024, Vienna, Austria},
+  series       = {LIPIcs},
+  volume       = {301},
+  pages        = {11:1--11:22},
+  publisher    = {Schloss Dagstuhl - Leibniz-Zentrum f{\"{u}}r Informatik},
+  year         = {2024},
+  url          = {https://doi.org/10.4230/LIPIcs.SEA.2024.11},
+  doi          = {10.4230/LIPICS.SEA.2024.11},
+  timestamp    = {Fri, 12 Jul 2024 15:29:30 +0200},
+  biburl       = {https://dblp.org/rec/conf/wea/FarajGJM024.bib},
+  bibsource    = {dblp computer science bibliography, https://dblp.org}
+}
+```
