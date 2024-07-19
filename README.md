@@ -25,7 +25,7 @@ Optional arguments include:
 - `--verbose`: Enable verbose logging
 - `--output`: Specify an output file where the augmented graph should be written to
 
-An example of how to use our algoirhtm can be found in `run_example.sh`.
+Examples of how to use our different algoirhtms can be found in `run_examples.sh`.
 
 ### Algorithms
 |Name|Status|Description|Parameters|Limitations|
