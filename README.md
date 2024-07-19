@@ -1,18 +1,20 @@
+HeiConnect v1.0  [![Codacy Badge](https://app.codacy.com/project/badge/Grade/9d0d08ba6b2d42699ab74fe5f9697bb9)](https://www.codacy.com/gh/KaHIP/KaHIP/dashboard?utm_source=github.com&amp;utm_medium=referral&amp;utm_content=KaHIP/KaHIP&amp;utm_campaign=Badge_Grade)
+[![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
+=====
+
 # Weighted Connectivity Augmentation Algorithms
 This repository contains an exact ILP-based solver as well as several heuristic algorithms for the weighted connectivity augmentation problem.
 
 ## Building
 The project can be build using CMake. Make sure that the [Gurobi Optimizer](https://www.gurobi.com/solutions/gurobi-optimizer) and the [Boost](https://boost.org) and [LEMON](https://lemon.cs.elte.hu/trac/lemon) graph libraries can be found on your system. Gurobi is used to solve ILPs and LPs, Boost is mainly used to compute maximum flows while LEMON is used to compute a maximum weighted matching due to bugs in the Boost graph library.
 ```sh
-cmake -DCMAKE_BUILD_TYPE=Release -B build-release .
-cd build-release
-make
+./build.sh
 ```
 
 Verbose logging can be disabled at compile time with the CMake flag `-DENABLE_VERBOSE_LOG=OFF` for code optimization.
 
 ## Running
-The main binary is `Solver`, i.e. `build-release/Solver`.
+The main binary is `solver`, i.e. `build/solver`.
 
 Required arguments are
 - `--graph <path>`: The path to the original graph file (adjacency list text file)
@@ -23,10 +25,7 @@ Optional arguments include:
 - `--verbose`: Enable verbose logging
 - `--output`: Specify an output file where the augmented graph should be written to
 
-An example using short arguments: 
-```sh
-./build-release/Solver -g graphs/misc/cycle-100.graph -c cactus/misc/cycle-100.xml -a mst-flow -o augmented_graph.graph
-```
+An example of how to use our algoirhtm can be found in `run_example.sh`.
 
 ### Algorithms
 |Name|Status|Description|Parameters|Limitations|

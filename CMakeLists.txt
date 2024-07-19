@@ -56,8 +56,8 @@ target_link_libraries(config PRIVATE argtable3 util)
 target_link_libraries(graph util)
 target_link_libraries(approx ring_graph util)
 
-add_executable(Solver src/Solver.cpp)
-target_link_libraries(Solver PUBLIC graph ilp greedy approx pugixml config watanabe util)
+add_executable(solver app/solver.cpp)
+target_link_libraries(solver PUBLIC graph ilp greedy approx pugixml config watanabe util)
 
 # Gurobi
 find_path(GUROBI_INCLUDE_DIRS
@@ -66,7 +66,7 @@ find_path(GUROBI_INCLUDE_DIRS
   PATH_SUFFIXES include)
 
 find_library(GUROBI_LIBRARY
-  NAMES gurobi gurobi100
+  NAMES gurobi gurobi100 
   HINTS ${GUROBI_DIR} $ENV{GUROBI_HOME}
   PATH_SUFFIXES lib)
 
@@ -81,6 +81,11 @@ find_package_handle_standard_args(GUROBI DEFAULT_MSG GUROBI_LIBRARY)
 
 include_directories(${GUROBI_INCLUDE_DIRS})
 
-target_link_libraries(Solver PUBLIC optimized ${GUROBI_CXX_LIBRARY}
+target_link_libraries(solver PUBLIC optimized ${GUROBI_CXX_LIBRARY}
   debug ${GUROBI_CXX_DEBUG_LIBRARY})
-target_link_libraries(Solver PUBLIC ${GUROBI_LIBRARY})
+target_link_libraries(solver PUBLIC ${GUROBI_LIBRARY})
+
+add_executable(graphchecker app/graphchecker.cpp )
+target_compile_definitions(graphchecker PRIVATE "-DMODE_GRAPHCHECKER")
+target_link_libraries(graphchecker ${OpenMP_CXX_LIBRARIES})
+install(TARGETS graphchecker DESTINATION bin)
