@@ -1,5 +1,8 @@
 build
 build-*
+deploy
 .cache
 output
 *.gz
+*.log
+augmented_graph.graph

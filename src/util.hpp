@@ -21,8 +21,8 @@ bool is_verbose();
 #else
 #define DEBUG(msg) ;
 #endif
-#define INFO(msg) std::cout << "INFO : " << msg << std::endl;
-#define WARN(msg) std::cout << "WARN : " << msg << std::endl;
+#define INFO(msg) std::cout << " INFO: " << msg << std::endl;
+#define WARN(msg) std::cout << " WARN: " << msg << std::endl;
 #define ERROR(msg) std::cerr << "ERROR: " << msg << std::endl;
 #define FATAL(msg)                                                             \
   std::cerr << "ERROR:" << msg << std::endl;                                   \

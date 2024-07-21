@@ -29,12 +29,6 @@ std::list<graph::Edge> greedy_weak(graph::GraphPair &g) {
   while (cuts.size() > 0) {
     graph::CactusCut cut = cuts.front();
     cuts.pop_front();
-    // if (std::any_of(augmentation.begin(), augmentation.end(),
-    //                 [&](graph::Edge &val) {
-    //                   return cut.is_edge_cut(val.first, val.second);
-    //                 })) {
-    //   continue;
-    // }
     // greedily add cheapest edge to increase cut
     graph::Edge best_edge = {0, 0, std::numeric_limits<double>::max()};
     for (int u = 1; u <= g.cactus.num_nodes(); ++u) {
@@ -287,7 +281,6 @@ std::list<graph::Edge> greedy_dynamic(graph::DynamicCactus &g) {
     g.contract(best_edge.first, best_edge.second);
     DEBUG("Cactus size: " << g.size() << ", links: " << g.links.size());
 
-    // if (cnt % 5 == 0)
     g.reduce_links();
   }
 
@@ -347,10 +340,6 @@ std::list<graph::Edge> greedy_dynamic_sampling(graph::DynamicCactus &g) {
     g.contract(best_edge.first, best_edge.second);
     DEBUG("Cactus size: " << g.size() << ", links: " << g.links.size());
   }
-  std::list<graph::Edge> links;
-  for (auto &l : buckets) {
-    links.insert(links.end(), l.begin(), l.end());
-  }
 
   return augmentation;
 }
@@ -358,6 +347,13 @@ std::list<graph::Edge> greedy_dynamic_sampling(graph::DynamicCactus &g) {
 std::list<graph::Edge> greedy_dynamic_bounds(graph::DynamicCactus &g) {
   DEBUG("Cactus size: " << g.size());
   std::list<graph::Edge> augmentation;
+
+  double max_weight = std::numeric_limits<double>::min();
+  for (auto &l : g.links) {
+    if (l.weight > max_weight)
+      max_weight = l.weight;
+  }
+  max_weight = std::max(max_weight, 1.);
 
   // lower bound buckets
   int num_lists = 32;
@@ -374,7 +370,7 @@ std::list<graph::Edge> greedy_dynamic_bounds(graph::DynamicCactus &g) {
     int u = g.pi(x.first);
     int v = g.pi(x.second);
     int num_increased_cuts = g.num_increased_cuts(u, v);
-    double heuristic = x.weight / num_increased_cuts;
+    double heuristic = x.weight / num_increased_cuts / max_weight;
     int to_list =
         std::min<double>(std::log2(1. / heuristic), num_lists - 2) + 1;
     lists[to_list].push_back(x);
@@ -410,7 +406,7 @@ std::list<graph::Edge> greedy_dynamic_bounds(graph::DynamicCactus &g) {
           continue;
         }
         int num_increased_cuts = g.num_increased_cuts(u, v);
-        double heuristic = weight / num_increased_cuts;
+        double heuristic = weight / num_increased_cuts / max_weight;
         if (heuristic < best_heuristic) {
           best_heuristic = heuristic;
           best_edge.weight = weight;

@@ -272,7 +272,9 @@ void GraphPair::add_links(const std::filesystem::path &link_file,
   if (std::filesystem::exists(link_file)) {
     load_links_from_file(link_file);
   } else {
-    WARN("Link file does not exists, generating uniform links with seed 0");
+    WARN("Link file "
+         << link_file
+         << " does not exist, generating uniform links with seed 0");
     add_links(0, fraction, distribution);
   }
 }

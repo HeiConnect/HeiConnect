@@ -7,6 +7,7 @@
 #include "watanabe.hpp"
 
 #include <numeric>
+#include <optional>
 #include <stdexcept>
 
 using namespace graph;
@@ -27,37 +28,30 @@ int main(int argc, char **argv) {
   bool convert_links = true;
 
   switch (params.algorithm) {
-  case config::Algorithm::DYNAMIC:
-  case config::Algorithm::DYNAMIC_BOUNDED: {
+  case config::Algorithm::GWC:
+  case config::Algorithm::GWC_SAMPLING: {
     convert_links = true;
     DynamicCactus g_dynamic;
     g_dynamic.read_from_file(params.cactus);
     g_dynamic.copy_links(g);
-    if (params.algorithm == config::Algorithm::DYNAMIC) {
-      if (params.sampling) {
-        solution = solver::greedy_dynamic_sampling(g_dynamic);
-      } else {
-        solution = solver::greedy_dynamic(g_dynamic);
-      }
+    if (params.algorithm == config::Algorithm::GWC_SAMPLING) {
+      solution = solver::greedy_dynamic_sampling(g_dynamic);
     } else {
       solution = solver::greedy_dynamic_bounds(g_dynamic);
     }
   } break;
-  case config::Algorithm::ILP:
+  case config::Algorithm::EILP:
     convert_links = false;
     solution = solver::ilp(g, params.use_initial, params.count);
     break;
   case config::Algorithm::GREEDY:
     solution = solver::greedy_weak(g);
     break;
-  case config::Algorithm::GREEDY_STRONG:
+  case config::Algorithm::GREEDY_GLOBAL:
     solution = solver::greedy_strong(g);
     break;
   case config::Algorithm::HEURISTIC:
     solution = solver::greedy_heuristic_strong(g);
-    break;
-  case config::Algorithm::HEURISTIC_SAMPLING:
-    solution = solver::greedy_heuristic_sampling(g, params.sampling);
     break;
   case config::Algorithm::APX2_LP:
     convert_links = false;
@@ -66,17 +60,17 @@ int main(int argc, char **argv) {
   case config::Algorithm::MST:
     solution = solver::greedy_mst(g);
     break;
-  case config::Algorithm::MST_FLOW:
+  case config::Algorithm::MST_CONNECT:
     solution = solver::greedy_mst_max_flow(g).first;
     break;
-  case config::Algorithm::MST_FLOW_HEURISTIC: {
+  case config::Algorithm::MST_CONNECT_HEURISTIC: {
     DynamicCactus g_dynamic;
     g_dynamic.read_from_file(params.cactus);
     g_dynamic.copy_links(g);
     solution = solver::greedy_mst_max_flow_heuristic(g, g_dynamic);
     break;
   }
-  case config::Algorithm::MST_FLOW_ORDER_HEURISTIC: {
+  case config::Algorithm::MST_CONNECT_ORDER_HEURISTIC: {
     DynamicCactus g_dynamic;
     g_dynamic.read_from_file(params.cactus);
     g_dynamic.copy_links(g);
@@ -86,10 +80,10 @@ int main(int argc, char **argv) {
   case config::Algorithm::FULL_MST:
     solution = solver::full_mst(g);
     break;
-  case config::Algorithm::MST_LS:
+  case config::Algorithm::MST_CONNECT_LS:
     solution = solver::greedy_2mst_localsearch(g, params.depth);
     break;
-  case config::Algorithm::MST_LS_FLOW:
+  case config::Algorithm::MST_CONNECT_LS_FLOW:
     solution = solver::greedy_2mst_localsearch_flow(g, params.depth,
                                                     params.cache, params.trees);
     break;
@@ -144,13 +138,13 @@ int main(int argc, char **argv) {
     }
   }
 
-  if (!params.output->empty()) {
+  if (params.output.has_value()) {
     for (auto x : solution) {
       g.original_graph.add_link(x);
     }
     g.original_graph.write_to_file(*params.output);
   }
-  
+
   INFO("Found solution with " << solution.size() << " links");
   INFO("Augmentation weight: " << std::accumulate(
            solution.begin(), solution.end(), 0.,

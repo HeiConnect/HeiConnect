@@ -5,26 +5,25 @@ namespace config {
 
 enum class Algorithm {
   GREEDY,
-  GREEDY_STRONG,
+  GREEDY_GLOBAL,
   HEURISTIC,
-  DYNAMIC,
-  DYNAMIC_BOUNDED,
-  HEURISTIC_SAMPLING,
-  ILP,
+  GWC,
+  GWC_SAMPLING,
+  EILP,
   APX2_LP,
   MST,
   MST_ILP,
   APX1_LN2_E,
   APX1_5_E,
-  MST_FLOW,
+  MST_CONNECT,
   FULL_MST,
-  MST_LS,
-  MST_LS_FLOW,
+  MST_CONNECT_LS,
+  MST_CONNECT_LS_FLOW,
   SMC,
   FSM,
   HBD,
-  MST_FLOW_HEURISTIC,
-  MST_FLOW_ORDER_HEURISTIC,
+  MST_CONNECT_HEURISTIC,
+  MST_CONNECT_ORDER_HEURISTIC,
 };
 
 enum class Distribution {
@@ -43,14 +42,14 @@ public:
   std::filesystem::path original_graph;
   std::filesystem::path links;
   std::filesystem::path cactus;
-  std::optional<std::filesystem::path> output = std::nullopt;
+  std::optional<std::filesystem::path> output = {};
 
   int cut = -1;
   Algorithm algorithm;
   int sampling = 0;
-  int trees = 1;
+  int trees = 0;
   int count = 1;
-  int depth = 1;
+  int depth = 0;
   bool cache = false;
   bool use_initial = false;
   double epsilon = 0.25;

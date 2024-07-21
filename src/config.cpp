@@ -8,6 +8,7 @@
 #include <cstdlib>
 #include <filesystem>
 #include <iostream>
+#include <optional>
 #include <stdexcept>
 #include <vector>
 
@@ -15,21 +16,20 @@ namespace config {
 
 static const std::vector<std::string> algorithm_names = {
     "greedy",
-    "greedy-strong",
+    "greedy-global",
     "heuristic",
-    "dynamic",
-    "dynamic-bounded",
-    "heuristic-sampling",
-    "ilp",
+    "gwc",
+    "gwc-sampling",
+    "eilp",
     "apx2lp",
     "mst",
-    "mst-ilp",
+    "mst-connect-ilp",
     "apx1ln2e",
     "apx1.5e",
-    "mst-flow",
+    "mst-connect",
     "full-mst",
     "mst-ls",
-    "mst-ls-flow",
+    "mst-connect-ls",
     "smc",
     "fsm",
     "hbd",
