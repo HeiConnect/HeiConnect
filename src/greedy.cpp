@@ -634,11 +634,6 @@ std::list<graph::Edge> greedy_2mst_localsearch(graph::GraphPair &g,
       // if it is valid, use it
       if (valid) {
         DEBUG("Applying best path with potential " << pot);
-        std::cout << "Path: ";
-        for (auto &e : path) {
-          std::cout << e->source << "-" << e->target << " ";
-        }
-        std::cout << std::endl;
 
         for (int i = 0; i < cuts.size(); ++i) {
           cuts[i].first += diff[i];
@@ -748,11 +743,6 @@ std::list<graph::Edge> greedy_2mst_localsearch_flow(graph::GraphPair &g,
         DEBUG("Applying best path with potential " << pot);
         solution_weight += pot;
         auto now = std::chrono::steady_clock::now();
-        std::cout << "Path: ";
-        for (auto &e : path) {
-          std::cout << e->source << "-" << e->target << " ";
-        }
-        std::cout << std::endl;
 
         for (auto &e : path) {
           if (e->active) {

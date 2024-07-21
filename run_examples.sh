@@ -19,7 +19,7 @@ echo "Running MSTConnect + LS"
 
 # run GreedyWeightCoverage 
 echo "Running GreedyWeightCoverage"
-./deploy/solver -g ${graph_path}/${g} -c ${cactus_path}/${c} -a gwc -o augmented_graph.graph --sampling=1
+./deploy/solver -g ${graph_path}/${g} -c ${cactus_path}/${c} -a gwc -o augmented_graph.graph
 
 # run eILP 
 echo "Running eILP"

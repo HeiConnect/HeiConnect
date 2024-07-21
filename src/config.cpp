@@ -70,7 +70,8 @@ int parse_distribution(const std::string &arg) {
 Params::Params(int argc, char **argv) {
   struct arg_lit *help, *arg_cache, *arg_use_initial, *arg_verbose;
   struct arg_str *arg_algorithm, *arg_distribution;
-  struct arg_file *arg_original_graph, *arg_cactus, *arg_output_file;
+  struct arg_file *arg_original_graph, *arg_cactus, *arg_output_file,
+      *arg_link_file;
   struct arg_int *arg_cut, *arg_sampling, *arg_count, *arg_depth, *arg_seed,
       *arg_trees;
   struct arg_dbl *arg_e, *arg_link_fraction;
@@ -80,6 +81,8 @@ Params::Params(int argc, char **argv) {
       help = arg_litn("h", "help", 0, 1, "display this help and exit"),
       arg_original_graph = arg_file1("g", "graph", "<graph>", "original graph"),
       arg_cactus = arg_file1("c", "cactus", "<cactus>", "cactus graph (xml)"),
+      arg_link_file =
+          arg_file0("l", "links", "<link graph>", "path to link graph"),
       arg_output_file = arg_file0("o", "output", "<output graph>",
                                   "file to write augmented graph to"),
       arg_cut = arg_int0(NULL, "cut", "<int>", "the min cut of the graph"),
@@ -146,8 +149,12 @@ Params::Params(int argc, char **argv) {
 #endif
 
   original_graph = std::filesystem::path{arg_original_graph->filename[0]};
-  links = {original_graph};
-  links.replace_extension("links");
+  if (arg_link_file->count) {
+    links = arg_link_file->filename[0];
+  } else {
+    links = {original_graph};
+    links.replace_extension("links");
+  }
   cactus = std::filesystem::path{arg_cactus->filename[0]};
   if (arg_output_file->count) {
     output = std::optional<std::filesystem::path>{arg_output_file->filename[0]};

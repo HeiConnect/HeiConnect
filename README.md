@@ -8,7 +8,7 @@ This code repository contains an exact ILP-based solver as well as several heuri
 
 ## Building
 
-The project can be build using CMake. Make sure that the [Gurobi Optimizer](https://www.gurobi.com/solutions/gurobi-optimizer) and the [Boost](https://boost.org) and [LEMON](https://lemon.cs.elte.hu/trac/lemon) graph libraries can be found on your system. Gurobi is used to solve ILPs and LPs, Boost is mainly used to compute maximum flows while LEMON is used to compute a maximum weighted matching due to bugs in the Boost graph library.
+The project can be build using CMake. Make sure that the [Gurobi Optimizer](https://www.gurobi.com/solutions/gurobi-optimizer) (tested >= 11.0.2) and the [Boost](https://boost.org) (tested >= 1.83) and [LEMON](https://lemon.cs.elte.hu/trac/lemon) (tested >= 1.3.1) graph libraries can be found on your system. Gurobi is used to solve ILPs and LPs, Boost is mainly used to compute maximum flows while LEMON is used to compute a maximum weighted matching due to bugs in the Boost graph library.
 
 ```sh
 ./build.sh
@@ -29,28 +29,25 @@ Required arguments are
 Optional arguments include:
 
 - `--verbose`: Enable verbose logging
+- `--links`: Specify a file containing the link graph in METIS graph format
 - `--output`: Specify an output file where the augmented graph should be written to
 
 Examples of how to use our different algorithms can be found in `run_examples.sh`.
 
 ### Algorithms
 
-| Name              | Description                                                                     | Parameters                                                                                                                               |
-| ----------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
-| `greedy`          | Weight + Cut Heuristic (naive implementation)                                   | none                                                                                                                                     |
-| `greedy-strong`   | Global Weight Heuristic (naive implementation)                                  | none                                                                                                                                     |
-| `gwc`             | Greedy Weight-Coverage Heuristic using dynamic cactus data structure and bounds | `--sampling=<0,1>` (`1` enables sampling)                                                                                                |
-| `gwc-sampling`    | Greedy Weight-Coverage Heuristic using dynamic cactus and sampling              | `--sampling=<int>` (number of link buckets, `0` is `sqrt n`)                                                                             |
-| `mst-connect`     | MST-Connect Algorithm                                                           | none                                                                                                                                     |
-| `mst-connect-ls`  | Local Search on MST-Connect Algorithm solution                                  | `--depth=<int>` (max. length of alternating paths), `--cache` (cache invalid alternating paths), `--trees=<int>` (number of MSTs to use) |
-| `mst-connect-ilp` | Find optimum solution using only links of MSTs                                  | `--trees=<int>` (number of minimum spanning trees to use)                                                                                |
-| `eilp`            | Optimal ILP                                                                     | `--use-initial` (Use `mst-connect` as initial solution)                                                                                  |
-| `apx2lp`          | LP-based 2-approximation                                                        | none                                                                                                                                     |
-| `apx1ln2e`        |                                                                                 | `--epsilon=<float>` (set epsilon, default 0.15)                                                                                          |
-| `apx1.5e`         |                                                                                 | `--epsilon=<float>` (set epsilon, default 0.15)                                                                                          |
-| `smc`             | SMC implementation using dynamic graph data structure                           | none                                                                                                                                     |
-| `fsm`             | FSM implementation using dynamic graph data structure                           | none                                                                                                                                     |
-| `hbd`             | HBD implementation using dynamic graph data structure                           | none                                                                                                                                     |
+| Name             | Description                                                                     | Parameters                                                                                                                               |
+| ---------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- |
+| `gwc`            | Greedy Weight-Coverage Heuristic using dynamic cactus data structure and bounds | `--sampling=<0,1>` (`1` enables sampling)                                                                                                |
+| `mst-connect`    | MST-Connect Algorithm                                                           | none                                                                                                                                     |
+| `mst-connect-ls` | Local Search on MST-Connect Algorithm solution                                  | `--depth=<int>` (max. length of alternating paths), `--cache` (cache invalid alternating paths), `--trees=<int>` (number of MSTs to use) |
+| `eilp`           | Optimal ILP                                                                     | `--use-initial` (Use `mst-connect` as initial solution)                                                                                  |
+| `apx2lp`         | LP-based 2-approximation                                                        | none                                                                                                                                     |
+| `apx1ln2e`       |                                                                                 | `--epsilon=<float>` (set epsilon, default 0.15)                                                                                          |
+| `apx1.5e`        |                                                                                 | `--epsilon=<float>` (set epsilon, default 0.15)                                                                                          |
+| `smc`            | SMC implementation using dynamic graph data structure                           | none                                                                                                                                     |
+| `fsm`            | FSM implementation using dynamic graph data structure                           | none                                                                                                                                     |
+| `hbd`            | HBD implementation using dynamic graph data structure                           | none                                                                                                                                     |
 
 ### Graph instances
 
