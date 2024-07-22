@@ -29,7 +29,7 @@ Required arguments are
 Optional arguments include:
 
 - `--verbose`: Enable verbose logging
-- `--links`: Specify a file containing the link graph in METIS graph format
+- `--links`: Specify a file containing one link per line (`source target weight`)
 - `--output`: Specify an output file where the augmented graph should be written to
 
 Examples of how to use our different algorithms can be found in `run_examples.sh`.
