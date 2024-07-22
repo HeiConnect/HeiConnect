@@ -7,7 +7,7 @@ g="cycle-100.graph"
 c="cycle-100.xml"
 
 # compute the cactus graph using VieCut:
-./extern/VieCut/build/mincut ${graph_path}/${g} -c ${cactus_path}/${c}
+./extern/VieCut/build/mincut ${graph_path}/${g} cactus -t ${cactus_path}/${c}
 
 # run MSTConnect 
 echo "Running MSTConnect"
@@ -23,4 +23,4 @@ echo "Running GreedyWeightCoverage"
 
 # run eILP 
 echo "Running eILP"
-# ./deploy/solver -g ${graph_path}/${g} -c ${cactus_path}/${c} -a eilp -o augmented_graph.graph
+./deploy/solver -g ${graph_path}/${g} -c ${cactus_path}/${c} -a eilp -o augmented_graph.graph
