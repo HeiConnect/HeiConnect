@@ -38,11 +38,11 @@ include_directories(${argtable_SOURCE_DIR}/src)
 include_directories(${pugixml_SOURCE_DIR}/src)
 
 find_package(Boost REQUIRED)
-find_package(LEMON REQUIRED)
 
 include_directories(
   ./src
 )
+
 
 add_library(util src/util.cpp)
 add_library(graph src/graph.cpp)
@@ -60,13 +60,24 @@ add_executable(solver app/solver.cpp)
 target_link_libraries(solver PUBLIC graph ilp greedy approx pugixml config watanabe util)
 
 # Gurobi
+if(DEFINED ENV{GUROBI_HOME})
+  set(GUROBI_DIR $ENV{GUROBI_HOME})
+else()
+  message(WARNING "GUROBI_HOME environment variable is not set. Please set it or provide GUROBI_DIR manually.")
+  set(GUROBI_DIR "path/to/gurobi")
+endif()
+
+message(STATUS "Gurobi environment variable GUROBI_HOME: $ENV{GUROBI_HOME}")
+message(STATUS "Gurobi directory GUROBI_DIR: ${GUROBI_DIR}")
+
+# Gurobi
 find_path(GUROBI_INCLUDE_DIRS
   NAMES gurobi_c.h
-  HINTS ${GUROBI_DIR} $ENV{GUROBI_HOME}
+  HINTS ${GUROBI_DIR} $ENV{GUROBI_HOME} 
   PATH_SUFFIXES include)
 
 find_library(GUROBI_LIBRARY
-  NAMES gurobi gurobi100 
+  NAMES gurobi gurobi100 gurobi91 gurobi110
   HINTS ${GUROBI_DIR} $ENV{GUROBI_HOME}
   PATH_SUFFIXES lib)
 

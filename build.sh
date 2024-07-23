@@ -18,8 +18,7 @@ if [[ "$unamestr" == "Darwin" ]]; then
         NCORES=`sysctl -n hw.ncpu`
 fi
 
-# compile mmwis and hils
-
+# compile 
 rm -rf deploy
 rm -rf build
 mkdir build
