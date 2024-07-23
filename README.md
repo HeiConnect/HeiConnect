@@ -2,7 +2,7 @@ HeiConnect v1.0 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/9d0d
 [![License: MIT](https://img.shields.io/badge/License-MIT-yellow.svg)](https://opensource.org/licenses/MIT)
 =====
 
-# Weighted Connectivity Augmentation Algorithms
+## Weighted Connectivity Augmentation Algorithms
 
 Increasing the connectivity of a graph is a pivotal challenge in robust network design. The weighted connectivity augmentation problem is a common version of the problem that takes link costs into consideration. The problem is then to find a minimum cost subset of a given set of weighted links that increases the connectivity of a graph by one when the links are added to the edge set of the input instance. Here, we give a first implementation of recently discovered better-than-2 approximations. Furthermore, we propose three new heuristic and one exact approach. These include a greedy algorithm considering link costs and the number of unique cuts covered, an approach based on minimum spanning trees and a local search algorithm that may improve a given solution by swapping links of paths. Our exact approach uses an ILP formulation with efficient cut enumeration as well as a fast initialization routine. 
 
