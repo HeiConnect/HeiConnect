@@ -4,9 +4,10 @@ HeiConnect v1.0 [![Codacy Badge](https://app.codacy.com/project/badge/Grade/9d0d
 
 ## Weighted Connectivity Augmentation Algorithms
 
-Increasing the connectivity of a graph is a pivotal challenge in robust network design. The weighted connectivity augmentation problem is a common version of the problem that takes link costs into consideration. The problem is then to find a minimum cost subset of a given set of weighted links that increases the connectivity of a graph by one when the links are added to the edge set of the input instance. Here, we give a first implementation of recently discovered better-than-2 approximations. Furthermore, we propose three new heuristic and one exact approach. These include a greedy algorithm considering link costs and the number of unique cuts covered, an approach based on minimum spanning trees and a local search algorithm that may improve a given solution by swapping links of paths. Our exact approach uses an ILP formulation with efficient cut enumeration as well as a fast initialization routine. 
+Increasing the connectivity of a graph is a pivotal challenge in robust network design. The weighted connectivity augmentation problem is a common version of the problem that takes link costs into consideration. The problem is then to find a minimum cost subset of a given set of weighted links that increases the connectivity of a graph by one when the links are added to the edge set of the input instance. Here, we give a first implementation of recently discovered better-than-2 approximations. Furthermore, we propose three new heuristic and one exact approach. These include a greedy algorithm considering link costs and the number of unique cuts covered, an approach based on minimum spanning trees and a local search algorithm that may improve a given solution by swapping links of paths. Our exact approach uses an ILP formulation with efficient cut enumeration as well as a fast initialization routine.
 
-## Download 
+## Download
+
 You can download HeiConnect with the following command line:
 
 ```console
@@ -30,7 +31,7 @@ The main binary is `solver`, i.e. `deploy/solver`.
 Required arguments are
 
 - `--graph <path>`: The path to the original graph file (in the [METIS graph format](http://people.sc.fsu.edu/~jburkardt/data/metis_graph/metis_graph.html))
-- `--cactus <path>`: The path to the cactus graph file (GraphML xml format, i.e. created by [VieCut](https://github.com/VieCut/VieCut), `mincut <graph> cactus -t <cactus>`)
+- `--cactus <path>`: The path to the cactus graph file ([GraphML](http://graphml.graphdrawing.org/) xml format, i.e. created by [VieCut](https://github.com/VieCut/VieCut), `mincut <graph> cactus -t <cactus>`)
 - `--algorithm <algorithm>`: the algorithm to use
 
 Optional arguments include:
@@ -45,8 +46,8 @@ Examples of how to use our different algorithms can be found in `run_examples.sh
 ### Algorithms
 
 | Name             | Description                                                                     | Parameters                                                                                                                               | Recommended for instances with |
-| ---------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------|
-| `gwc`            | Greedy Weight-Coverage Heuristic using dynamic cactus data structure and bounds | `--sampling=<0,1>` (`1` enables sampling)                                                                                                | small link costs (generated)   | 
+| ---------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | ------------------------------ |
+| `gwc`            | Greedy Weight-Coverage Heuristic using dynamic cactus data structure and bounds | `--sampling=<0,1>` (`1` enables sampling)                                                                                                | small link costs (generated)   |
 | `mst-connect`    | MST-Connect Algorithm                                                           | none                                                                                                                                     | large link costs               |
 | `mst-connect-ls` | Local Search on MST-Connect Algorithm solution                                  | `--depth=<int>` (max. length of alternating paths), `--cache` (cache invalid alternating paths), `--trees=<int>` (number of MSTs to use) | large link costs               |
 | `eilp`           | Optimal ILP                                                                     | `--use-initial` (Use `mst-connect` as initial solution)                                                                                  | small link costs (real world)  |
@@ -56,6 +57,10 @@ Examples of how to use our different algorithms can be found in `run_examples.sh
 | `smc`            | SMC implementation using dynamic graph data structure                           | none                                                                                                                                     |
 | `fsm`            | FSM implementation using dynamic graph data structure                           | none                                                                                                                                     |
 | `hbd`            | HBD implementation using dynamic graph data structure                           | none                                                                                                                                     |
+
+### Graph formats
+
+This solver uses different graphs formats. The input graph and the resulting augmented graph are in the [METIS ASCII graph format](http://people.sc.fsu.edu/~jburkardt/data/metis_graph/metis_graph.html). The first line contains the number of vertices and edges, and each subsequent line lists the neighbors of a vertex. A cactus graph cannot be represented in such a simple format because each vertex of a cactus graph contains a set of vertices of the input graph. Therefore, the XML based [GraphML](http://graphml.graphdrawing.org/) format is used, that allows the definition of custom attributes for vertices and edges. For vertices, `containedVertices` is used for vertices, and `weight` for edge weights, as in the output of [VieCut](https://github.com/VieCut/VieCut).
 
 ### Graph instances
 
