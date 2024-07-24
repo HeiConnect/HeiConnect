@@ -84,7 +84,8 @@ int parse_distribution(const std::string &arg) {
 }
 
 Params::Params(int argc, char **argv) {
-  struct arg_lit *help, *arg_cache, *arg_use_initial, *arg_verbose;
+  struct arg_lit *help, *arg_cache, *arg_use_initial, *arg_verbose,
+      *arg_output_links;
   struct arg_str *arg_algorithm, *arg_distribution;
   struct arg_file *arg_original_graph, *arg_cactus, *arg_output_file,
       *arg_link_file;
@@ -114,6 +115,9 @@ Params::Params(int argc, char **argv) {
       arg_cache = arg_lit0(NULL, "cache", "Enable caching if supported"),
       arg_use_initial =
           arg_lit0(NULL, "use-initial", "Use initial solution for ILP"),
+      arg_output_links =
+          arg_lit0(NULL, "output-links",
+                   "Only output links instead of the augmented graph"),
       arg_e = arg_dbl0("e", "epsilon", "<double>",
                        "Set epsilon for approximations. Defaults to 0.25"),
       arg_seed = arg_int0("s", "seed", "<int>",
@@ -211,6 +215,9 @@ Params::Params(int argc, char **argv) {
   }
   if (arg_use_initial->count) {
     use_initial = true;
+  }
+  if (arg_output_links->count) {
+    output_links = true;
   }
   if (arg_e->count) {
     epsilon = arg_e->dval[0];

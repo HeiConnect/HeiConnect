@@ -38,6 +38,7 @@ Optional arguments include:
 - `--verbose`: Enable verbose logging
 - `--links`: Specify a file containing one link per line (`source target weight`)
 - `--output`: Specify an output file where the augmented graph should be written to
+- `--output-links`: Output only links in the solution, not the whole augmented graph
 
 Examples of how to use our different algorithms can be found in `run_examples.sh`.
 

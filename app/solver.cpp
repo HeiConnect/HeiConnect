@@ -6,6 +6,7 @@
 #include "util.hpp"
 #include "watanabe.hpp"
 
+#include <fstream>
 #include <numeric>
 #include <optional>
 #include <stdexcept>
@@ -139,10 +140,20 @@ int main(int argc, char **argv) {
   }
 
   if (params.output.has_value()) {
-    for (auto x : solution) {
-      g.original_graph.add_link(x);
+    if (params.output_links) {
+      std::ofstream link_output_file;
+      link_output_file.open(*params.output);
+      for (auto &x : solution) {
+        link_output_file << x.first << " " << x.second << " " << x.weight
+                         << std::endl;
+      }
+      link_output_file.close();
+    } else {
+      for (auto x : solution) {
+        g.original_graph.add_link(x);
+      }
+      g.original_graph.write_to_file(*params.output);
     }
-    g.original_graph.write_to_file(*params.output);
   }
 
   INFO("Found solution with " << solution.size() << " links");

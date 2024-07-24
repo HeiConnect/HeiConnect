@@ -56,6 +56,7 @@ public:
   int seed = -1;
   double link_fraction = 1.;
   int distribution = 1;
+  bool output_links = false;
 
   Params(int argc, char **argv);
 };
