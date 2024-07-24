@@ -98,7 +98,7 @@ Params::Params(int argc, char **argv) {
       help = arg_litn("h", "help", 0, 1, "display this help and exit"),
       arg_original_graph = arg_file1("g", "graph", "<graph>",
                                      "original graph (in METIS format)"),
-      arg_cactus = arg_file1("c", "cactus", "<cactus>",
+      arg_cactus = arg_file0("c", "cactus", "<cactus>",
                              "cactus graph (GraphML xml format)"),
       arg_link_file = arg_file0(
           "l", "links", "<link graph>",
@@ -192,7 +192,12 @@ Params::Params(int argc, char **argv) {
     links = {original_graph};
     links.replace_extension("links");
   }
-  cactus = std::filesystem::path{arg_cactus->filename[0]};
+  if (arg_cactus->count) {
+    cactus = std::filesystem::path{arg_cactus->filename[0]};
+  } else {
+    cactus = {original_graph};
+    cactus.replace_extension("cactus.xml");
+  }
   if (arg_output_file->count) {
     output = std::optional<std::filesystem::path>{arg_output_file->filename[0]};
   }

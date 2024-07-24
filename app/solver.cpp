@@ -4,6 +4,7 @@
 #include "greedy.hpp"
 #include "ilp.hpp"
 #include "util.hpp"
+#include "viecut_runner.hpp"
 #include "watanabe.hpp"
 
 #include <fstream>
@@ -15,6 +16,8 @@ using namespace graph;
 
 int main(int argc, char **argv) {
   config::Params params{argc, argv};
+
+  compute_cactus(params.original_graph, params.cactus);
 
   GraphPair g;
   TIMEIT("Read graph", g.read_graph(params.original_graph, params.cactus));
