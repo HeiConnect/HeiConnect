@@ -14,33 +14,49 @@
 
 namespace config {
 
-static const std::vector<std::string> algorithm_names = {
-    "greedy",
-    "greedy-global",
-    "heuristic",
-    "gwc",
-    "gwc-sampling",
-    "eilp",
-    "apx2lp",
-    "mst",
-    "mst-connect-ilp",
-    "apx1ln2e",
-    "apx1.5e",
-    "mst-connect",
-    "full-mst",
-    "mst-ls",
-    "mst-connect-ls",
-    "smc",
-    "fsm",
-    "hbd",
-    "mst-heuristic",
-    "mst-order-heuristic",
+struct AlgorithmParam {
+  Algorithm algorithm;
+  std::string name;
+  bool public_api;
+  std::string description;
+  std::vector<std::string> params;
+};
+
+static const std::vector<AlgorithmParam> algorithm_params = {
+    {Algorithm::GREEDY, "greedy", false, "", {}},
+    {Algorithm::GREEDY_GLOBAL, "greedy-global", false, "", {}},
+    {Algorithm::HEURISTIC, "heuristic", false, "", {}},
+    {Algorithm::GWC, "gwc", true, "GreedyWeightCoverage", {"sampling"}},
+    {Algorithm::GWC_SAMPLING, "gwc-sampling", false, "", {}},
+    {Algorithm::EILP, "eilp", true, "eILP", {"use-initial"}},
+    {Algorithm::APX2_LP, "apx2lp", false, "", {}},
+    {Algorithm::MST, "mst", false, "", {}},
+    {Algorithm::MST_ILP, "mst-connect-ilp", false, "", {}},
+    {Algorithm::APX1_LN2_E, "apx1ln2e", false, "", {}},
+    {Algorithm::APX1_5_E, "apx1.5e", false, "", {}},
+    {Algorithm::MST_CONNECT, "mst-connect", true, "MSTConnect", {}},
+    {Algorithm::FULL_MST, "full-mst", false, "", {}},
+    {Algorithm::MST_CONNECT_LS, "mst-ls", false, "", {}},
+    {Algorithm::MST_CONNECT_LS_FLOW,
+     "mst-connect-ls",
+     true,
+     "MSTConnect with Local Search",
+     {"depth", "cache", "trees"}},
+    {Algorithm::SMC, "smc", false, "", {}},
+    {Algorithm::FSM, "fsm", false, "", {}},
+    {Algorithm::HBD, "hbd", false, "", {}},
+    {Algorithm::MST_CONNECT_HEURISTIC, "mst-heuristic", false, "", {}},
+    {Algorithm::MST_CONNECT_ORDER_HEURISTIC,
+     "mst-order-heuristic",
+     false,
+     "",
+     {}},
 };
 
 Algorithm parse_algorithm(const std::string &arg) {
-  for (size_t i = 0; i < algorithm_names.size(); ++i) {
-    if (arg == algorithm_names[i]) {
-      return (Algorithm)i;
+  for (auto &algo_param : algorithm_params) {
+    if (arg == algo_param.name) {
+      return algo_param.algorithm;
     }
   }
   throw std::invalid_argument("Algorithm is invalid");
@@ -79,10 +95,13 @@ Params::Params(int argc, char **argv) {
 
   void *argtable[] = {
       help = arg_litn("h", "help", 0, 1, "display this help and exit"),
-      arg_original_graph = arg_file1("g", "graph", "<graph>", "original graph"),
-      arg_cactus = arg_file1("c", "cactus", "<cactus>", "cactus graph (xml)"),
-      arg_link_file =
-          arg_file0("l", "links", "<link graph>", "path to link graph"),
+      arg_original_graph = arg_file1("g", "graph", "<graph>",
+                                     "original graph (in METIS format)"),
+      arg_cactus = arg_file1("c", "cactus", "<cactus>",
+                             "cactus graph (GraphML xml format)"),
+      arg_link_file = arg_file0(
+          "l", "links", "<link graph>",
+          "path to link file (one link per line, 'source target weight')"),
       arg_output_file = arg_file0("o", "output", "<output graph>",
                                   "file to write augmented graph to"),
       arg_cut = arg_int0(NULL, "cut", "<int>", "the min cut of the graph"),
@@ -123,9 +142,23 @@ Params::Params(int argc, char **argv) {
 
   /* special case: '--help' takes precedence over error reporting */
   if (help->count > 0) {
-    std::cout << "Usage:";
+    std::cout << "Usage: solver";
     arg_print_syntax(stdout, argtable, "\n");
-    arg_print_glossary(stdout, argtable, "  %-25s %s\n");
+    arg_print_glossary(stdout, argtable, "  %-28s %s\n\n");
+    std::cout << "Possible algorithms are:" << std::endl;
+    for (auto &algo_param : algorithm_params) {
+      if (algo_param.public_api) {
+        std::cout << "\t" << algo_param.name << " (" << algo_param.description;
+        if (algo_param.params.size()) {
+          std::cout << ", available parameters: ";
+          for (auto &p : algo_param.params) {
+            std::cout << p << ", ";
+          }
+          std::cout << "\b\b";
+        }
+        std::cout << ")" << std::endl;
+      }
+    }
     arg_freetable(argtable, sizeof(argtable) / sizeof(argtable[0]));
     exit(0);
   }

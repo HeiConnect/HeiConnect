@@ -43,7 +43,7 @@ Examples of how to use our different algorithms can be found in `run_examples.sh
 
 ### Algorithms
 
-| Name             | Description                                                                     | Parameters                                                                                                                               | Recommendet for instances with |
+| Name             | Description                                                                     | Parameters                                                                                                                               | Recommended for instances with |
 | ---------------- | ------------------------------------------------------------------------------- | ---------------------------------------------------------------------------------------------------------------------------------------- | -------------------------------|
 | `gwc`            | Greedy Weight-Coverage Heuristic using dynamic cactus data structure and bounds | `--sampling=<0,1>` (`1` enables sampling)                                                                                                | small link costs (generated)   | 
 | `mst-connect`    | MST-Connect Algorithm                                                           | none                                                                                                                                     | large link costs               |
