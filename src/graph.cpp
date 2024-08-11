@@ -96,6 +96,18 @@ void OriginalGraph::read_from_file(const std::filesystem::path &path) {
   std::istringstream iss(line);
   iss >> n >> m;
   DEBUG("Parsing original graph with " << n << " nodes and " << m << " edges");
+  int weight_fmt = 0, n_vertex_weights = 0, tmp;
+  if (!iss.eof()) {
+    iss >> weight_fmt;
+  }
+  if (weight_fmt >= 10) {
+    if (iss.eof()) {
+      n_vertex_weights = 1;
+    } else {
+      iss >> n_vertex_weights;
+    }
+  }
+  bool has_edge_weights = weight_fmt % 2 == 1;
   init(n, m);
   unsigned int u = 1, v;
   while (std::getline(file, line)) {
@@ -103,9 +115,15 @@ void OriginalGraph::read_from_file(const std::filesystem::path &path) {
       continue;
     }
     std::istringstream iss(line);
+    for (int i = 0; i < n_vertex_weights; ++i) {
+      iss >> tmp;
+    }
     while ((iss >> v)) {
       if (u < v)
         add_edge(u, v);
+      if (has_edge_weights) {
+        iss >> tmp;
+      }
     }
 
     ++u;
